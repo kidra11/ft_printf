@@ -6,7 +6,7 @@
 /*   By: nsion <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:18:55 by nsion             #+#    #+#             */
-/*   Updated: 2023/02/21 16:21:14 by nsion            ###   ########.fr       */
+/*   Updated: 2023/02/21 20:09:00 by nsion            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,35 +33,42 @@ int	ft_putstr(char *s)
 	return (i);
 }
 
-int	ft_putnbr(int n)
+int	checkbase(int n)
 {
-	int	num;
+	if (n < 2)
+		return (2);
+	else if (n >= 65 && n <= 70)
+		return (16);
+	else
+		return (10);
 
-	num = 0;
-	if (n == -2147483648)
-	{
-		num = ft_putstr("-2147483648\0");
-		return (num);
-	}
+}
+
+int	ft_putnbr_base(int n, int num)
+{
+	int	base;
+
+	base = checkbase(n);
+	if (base == 2)
+		base = 2;
+	if (base == 10)
+		base = 10;
+	if (base == 16)
+		base = 16;
 	if (n < 0)
 	{
 		ft_putchar('-');
-		n = -n;
+		n = n * -1;
 		num++;
 	}
-	if (n >= 0 && n <= 9)
+	if (n >= base)
 	{
-		ft_putchar(n + '0');
-		num++;
+		ft_putnbr_base((n / base), num);
 	}
-	else if (n > 9)
-	{
-		ft_putnbr(n / 10);
-		ft_putnbr(n % 10);
-	}
+	ft_putchar((n % base) + '0');
+	num++;
 	return (num);
 }
-
 
 static	int	find(char s, va_list trois, int num)
 {
@@ -74,8 +81,7 @@ static	int	find(char s, va_list trois, int num)
 		num += ft_putstr(va_arg(trois, char *));
 //	if (s == 'p')
 	if (s == 'd')
-		num += ft_putnbr(va_arg(trois, int));
-	printf("\n%d\n", num);
+		num += ft_putnbr_base(va_arg(trois, int), num);
 	return (num);
 }
 
@@ -97,12 +103,13 @@ int	ft_printf(const char *s, ...)
 		i++;
 		num++;
 	}
+	printf("%d\n", num);
 	va_end(trois);
 	return (num);
 }
 
 int	main(void)
 {
-	ft_printf("hello%d\n", 678);
+	ft_printf("hello%d\n", -645178);
 	return (0);
 }
