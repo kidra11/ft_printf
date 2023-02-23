@@ -6,7 +6,7 @@
 /*   By: nsion <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:18:55 by nsion             #+#    #+#             */
-/*   Updated: 2023/02/23 15:26:33 by nsion            ###   ########.fr       */
+/*   Updated: 2023/02/23 19:45:48 by nsion            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ int	ft_len(char *s)
 	return (i);
 }
 
-void	ft_putchar(char c)
+int	ft_putchar(char c)
 {
 	write(1, &c, 1);
+	return (1);
 }
 
 int	ft_putstr(char *s)
@@ -43,38 +44,44 @@ int	ft_putstr(char *s)
 	return (i);
 }
 
-void	ft_putnbr_base(int n, char *base, int *num)
+int	ft_putnbr_base(int n, char *base, int num)
 {
 	int	xbase;
+	int	n_final[16];
+	int	i;
 
 	xbase = ft_len(base);
+	i = 0;
 	if (n < 0)
 	{
-		ft_putchar('-');
+		num += ft_putchar('-');
 		n = n * -1;
-		num++;
 	}
-	if (n >= xbase)
+	while (n)
 	{
-		ft_putnbr_base((n / xbase), base, num);
+		n_final[i] = n % xbase;
+		n = n / xbase;
+		i++;
 	}
-	ft_putchar(base[n % xbase]);
-	num++;
+	while (--i >= 0)
+		num += ft_putchar(base[n_final[i]]);
+	return (num);
 }
 
 int	find(char s, va_list trois, int num)
 {
 	if (s == 'c')
-	{
-		ft_putchar(va_arg(trois, int));
-		num++;
-	}
+		num += ft_putchar(va_arg(trois, int));
 	if (s == 's')
 		num += ft_putstr(va_arg(trois, char *));
 	if (s == 'p')
-		ft_putnbr_base(va_arg(trois, int), "0123456789abcdef", &num);
+		num += ft_putnbr_base(va_arg(trois, int), "0123456789abcdef", num);
 	if (s == 'd')
-		ft_putnbr_base(va_arg(trois, int), "0123456789", &num);
+		num += ft_putnbr_base(va_arg(trois, int), "0123456789", num);
+	if (s == 'i')
+		num += ft_putnbr_base(va_arg(trois, int), "0123456789", num);
+	if (s == 'u')
+		
 	return (num);
 }
 
@@ -92,9 +99,8 @@ int	ft_printf(const char *s, ...)
 		if (s[i] == '%')
 			num += find(s[++i], trois, num);
 		else
-			ft_putchar(s[i]);
+			num += ft_putchar(s[i]);
 		i++;
-		num++;
 	}
 	printf("%d\n", num);
 	va_end(trois);
@@ -103,7 +109,8 @@ int	ft_printf(const char *s, ...)
 
 int	main(void)
 {
-	ft_printf("hello%p\n", -645178);
+	ft_printf("%ihello\n", -645178);
+	printf ("%d\n", printf("%ihello\n", -645178));
 	return (0);
 }
 
