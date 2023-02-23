@@ -6,12 +6,22 @@
 /*   By: nsion <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:18:55 by nsion             #+#    #+#             */
-/*   Updated: 2023/02/21 20:09:00 by nsion            ###   ########.fr       */
+/*   Updated: 2023/02/23 15:26:33 by nsion            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdarg.h>
 #include "libftprintf.h"
+
+int	ft_len(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
 
 void	ft_putchar(char c)
 {
@@ -33,44 +43,26 @@ int	ft_putstr(char *s)
 	return (i);
 }
 
-int	checkbase(int n)
+void	ft_putnbr_base(int n, char *base, int *num)
 {
-	if (n < 2)
-		return (2);
-	else if (n >= 65 && n <= 70)
-		return (16);
-	else
-		return (10);
+	int	xbase;
 
-}
-
-int	ft_putnbr_base(int n, int num)
-{
-	int	base;
-
-	base = checkbase(n);
-	if (base == 2)
-		base = 2;
-	if (base == 10)
-		base = 10;
-	if (base == 16)
-		base = 16;
+	xbase = ft_len(base);
 	if (n < 0)
 	{
 		ft_putchar('-');
 		n = n * -1;
 		num++;
 	}
-	if (n >= base)
+	if (n >= xbase)
 	{
-		ft_putnbr_base((n / base), num);
+		ft_putnbr_base((n / xbase), base, num);
 	}
-	ft_putchar((n % base) + '0');
+	ft_putchar(base[n % xbase]);
 	num++;
-	return (num);
 }
 
-static	int	find(char s, va_list trois, int num)
+int	find(char s, va_list trois, int num)
 {
 	if (s == 'c')
 	{
@@ -79,9 +71,10 @@ static	int	find(char s, va_list trois, int num)
 	}
 	if (s == 's')
 		num += ft_putstr(va_arg(trois, char *));
-//	if (s == 'p')
+	if (s == 'p')
+		ft_putnbr_base(va_arg(trois, int), "0123456789abcdef", &num);
 	if (s == 'd')
-		num += ft_putnbr_base(va_arg(trois, int), num);
+		ft_putnbr_base(va_arg(trois, int), "0123456789", &num);
 	return (num);
 }
 
@@ -97,7 +90,7 @@ int	ft_printf(const char *s, ...)
 	while (s[i])
 	{
 		if (s[i] == '%')
-			num = find(s[++i], trois, num);
+			num += find(s[++i], trois, num);
 		else
 			ft_putchar(s[i]);
 		i++;
@@ -110,6 +103,7 @@ int	ft_printf(const char *s, ...)
 
 int	main(void)
 {
-	ft_printf("hello%d\n", -645178);
+	ft_printf("hello%p\n", -645178);
 	return (0);
 }
+
