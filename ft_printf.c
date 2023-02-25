@@ -6,12 +6,11 @@
 /*   By: nsion <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:18:55 by nsion             #+#    #+#             */
-/*   Updated: 2023/02/24 17:43:32 by nsion            ###   ########.fr       */
+/*   Updated: 2023/02/25 18:26:38 by nsion            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 int	ft_putnbr_base(int n, char *base, int num)
 {
@@ -102,10 +101,7 @@ int	ft_printf(const char *s, ...)
 /*
 int	main(void)
 {
-	int	v = 0;
-
-	
-	printf("%d\n", ft_printf("%phello\n", &v));
-	printf ("%d\n", printf("%phello\n", &v));
+	printf("%d\n", ft_printf("%p %p\n", 0, 0));
+	printf ("%d\n", printf("%p %p\n", 0, 0));
 	return (0);
 }*/

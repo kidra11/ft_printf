@@ -6,11 +6,11 @@
 #    By: nsion <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/17 21:16:46 by nsion             #+#    #+#              #
-#    Updated: 2023/02/21 14:07:39 by nsion            ###   ########.fr        #
+#    Updated: 2023/02/24 18:04:34 by nsion            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	= ft_printf.c
+SRCS	= ft_printf.c ft_find.c
 
 NAME	= libftprintf.a
 
