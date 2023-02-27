@@ -6,11 +6,11 @@
 /*   By: nsion <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:18:55 by nsion             #+#    #+#             */
-/*   Updated: 2023/02/25 18:26:38 by nsion            ###   ########.fr       */
+/*   Updated: 2023/02/27 16:23:30 by nsion            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libftprintf.h"
 
 int	ft_putnbr_base(int n, char *base, int num)
 {
@@ -22,10 +22,15 @@ int	ft_putnbr_base(int n, char *base, int num)
 	i = 0;
 	if (n < 0)
 	{
+		if (n == -2147483648)
+		{
+			num += ft_putstr("-2147483648");
+			return (num);
+		}
 		num += ft_putchar('-');
 		n = n * -1;
 	}
-	while (n)
+	while (n || i == 0)
 	{
 		n_final[i] = n % xbase;
 		n = n / xbase;
@@ -44,7 +49,7 @@ int	ft_unput(unsigned int n, char *base, int num)
 
 	xbase = ft_len(base);
 	i = 0;
-	while (n)
+	while (n || i == 0)
 	{
 		n_final[i] = n % xbase;
 		n = n / xbase;
@@ -98,10 +103,3 @@ int	ft_printf(const char *s, ...)
 	va_end(trois);
 	return (num);
 }
-/*
-int	main(void)
-{
-	printf("%d\n", ft_printf("%p %p\n", 0, 0));
-	printf ("%d\n", printf("%p %p\n", 0, 0));
-	return (0);
-}*/

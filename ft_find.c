@@ -6,11 +6,11 @@
 /*   By: nsion <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 17:29:11 by nsion             #+#    #+#             */
-/*   Updated: 2023/02/25 18:39:23 by nsion            ###   ########.fr       */
+/*   Updated: 2023/02/27 16:21:41 by nsion            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libftprintf.h"
 
 int	ft_len(char *s)
 {
@@ -56,12 +56,15 @@ int	for_p(unsigned long long int *n, char *base, int num)
 	int						i;
 
 	if (!n)
-		return (ft_putstr("(null)"));
+	{
+		num += ft_putstr("(nil)");
+		return (num);
+	}
 	num += ft_putstr("0x");
 	ln = (unsigned long long int)n;
 	i = 0;
 	xbase = ft_len(base);
-	while (ln)
+	while (ln || i == 0)
 	{
 		n_final[i] = ln % xbase;
 		ln = ln / xbase;
